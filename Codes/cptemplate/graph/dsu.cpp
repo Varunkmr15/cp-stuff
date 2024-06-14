@@ -13,7 +13,7 @@ public:
             par[i] = i;
     }
 
-    int findUpar(int node)
+    int findUpar(int node) //Find ultimate parent
     {
         if (node == par[node])
             return node;
