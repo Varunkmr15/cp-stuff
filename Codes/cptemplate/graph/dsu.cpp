@@ -1,50 +1,57 @@
 //DSU O(4 Alpha) ~ O(1) avg
-class dsu {
-public: 
-    vector<int> rank, parent, size; 
-    dsu(int n) {
-        rank.resize(n+1, 0); 
-        parent.resize(n+1);
-        size.resize(n+1); 
-        for(int i = 0;i<=n;i++) {
-            parent[i] = i; 
-            size[i] = 1; 
+class DSU
+{
+public:
+    vector<int> rank, par, size;
+
+    DSU(int n = 0)
+    {
+        rank.resize(n + 1);
+        par.resize(n + 1);
+        size.resize(n + 1, 1);
+        for (int i = 0; i <= n; i++)
+            par[i] = i;
+    }
+
+    int findUpar(int node)
+    {
+        if (node == par[node])
+            return node;
+        return par[node] = findUpar(par[node]); // path comp
+    }
+
+    void unionbyRank(int u, int v)
+    {
+        int UparU = findUpar(u);
+        int UparV = findUpar(v);
+        if (UparU == UparV)
+            return;
+        if (rank[UparU] < rank[UparV])
+        {
+            par[UparU] = UparV;
+        }
+        else
+        {
+            par[UparV] = UparU;
+            rank[UparU] += (rank[UparU] == rank[UparV]);
         }
     }
 
-    int findUPar(int node) {
-        if(node == parent[node])
-            return node; 
-        return parent[node] = findUPar(parent[node]); 
-    }
-
-    void unionByRank(int u, int v) {
-        int ulp_u = findUPar(u); 
-        int ulp_v = findUPar(v); 
-        if(ulp_u == ulp_v) return; 
-        if(rank[ulp_u] < rank[ulp_v]) {
-            parent[ulp_u] = ulp_v; 
+    void unionbySize(int u, int v)
+    {
+        int UparU = findUpar(u);
+        int UparV = findUpar(v);
+        if (UparU == UparV)
+            return;
+        if (size[UparU] < size[UparV])
+        {
+            par[UparU] = UparV;
+            size[UparV] += size[UparU];
         }
-        else if(rank[ulp_v] < rank[ulp_u]) {
-            parent[ulp_v] = ulp_u; 
-        }
-        else {
-            parent[ulp_v] = ulp_u; 
-            rank[ulp_u]++; 
+        else
+        {
+            par[UparV] = UparU;
+            size[UparU] += size[UparV];
         }
     }
-
-    void unionBySize(int u, int v) {
-        int ulp_u = findUPar(u); 
-        int ulp_v = findUPar(v); 
-        if(ulp_u == ulp_v) return; 
-        if(size[ulp_u] < size[ulp_v]) {
-            parent[ulp_u] = ulp_v; 
-            size[ulp_v] += size[ulp_u]; 
-        }
-        else {
-            parent[ulp_v] = ulp_u;
-            size[ulp_u] += size[ulp_v]; 
-        }
-    }
-}; 
+};
