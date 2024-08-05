@@ -1,5 +1,7 @@
 // Shortest path with negative weights / negative cycles
 // TC:O(V * E)
+// relax edge v-1 times
+// if dist reduces when relaxed for vth time contain cycles
 void BellmanFord(int n, int src, vector<pair<int, ll>> *edges, vector<ll>& dist, set<int>& negCycle) {
 	fill(all(dist), INF);
 	dist[src] = 0;
